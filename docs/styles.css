@@ -7,8 +7,9 @@ body {
   background-image: url('www/logo.png');
   background-repeat: no-repeat;
   background-position: left center;
-  background-size: contain;
-  padding-left: 44px;
+  background-size: 32px 32px; /* fixed size - "contain" scaled to the whole
+  (very wide) navbar-brand box and ended up overlapping the title text */
+  padding-left: 46px;
 }
 
 /* banner photo at the top of a page, filling the content column */
@@ -65,17 +66,25 @@ body {
 }
 
 .home-section h2 {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.75rem;
 }
 
 .home-section-featured {
   text-align: center;
-  padding: 0.5rem 1.5rem 1rem;
+  padding: 1rem 1.5rem 1.5rem;
 }
 
 .home-section-featured p {
   font-style: italic;
-  font-size: 1.15rem;
+  font-size: 2.4rem; /* this theme's root font-size is 10px, so 1rem = 10px -
+  double the site's usual body text (14px) to actually read as "much larger" */
+  line-height: 1.35;
+}
+
+@media (max-width: 600px) {
+  .home-section-featured p {
+    font-size: 1.8rem;
+  }
 }
 
 .news-list {

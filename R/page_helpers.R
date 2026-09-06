@@ -42,6 +42,14 @@ show_partner_logo <- function(name, alt = name) {
   invisible(NULL)
 }
 
+# Italicizes scientific (binomial) names written like "(Genus species)" -
+# the convention used after a common name, e.g. "Barred Owls (Strix varia)".
+# Escape the text with htmltools::htmlEscape() first, then pass it through
+# this, so the <em> tags added here don't get escaped too.
+italicize_binomials <- function(text) {
+  gsub("\\(([A-Z][a-z]+ [a-z]+)\\)", "(<em>\\1</em>)", text)
+}
+
 # Prints one funder/partner (logo if available, else just the name) on the
 # Home page. `logo` is a filename (no extension) in www/partners/, or leave
 # blank/NA. `url` is optional - if set, the logo/name links out to it.

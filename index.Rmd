@@ -18,11 +18,11 @@ See the **Call Dictionary** tab for a reference guide to the different calls, wi
 ```{r sections, echo=FALSE, results='asis'}
 for (i in seq_len(nrow(sections))) {
   row <- sections[i, ]
-  featured <- identical(row$heading, "Our Goal")
+  featured <- identical(trimws(row$heading), "Our Goal")
   div_class <- if (featured) "home-section home-section-featured" else "home-section"
   cat('<div class="', div_class, '">\n', sep = "")
-  cat('<h2>', htmltools::htmlEscape(row$heading), '</h2>\n', sep = "")
-  cat('<p>', htmltools::htmlEscape(row$body), '</p>\n', sep = "")
+  if (!featured) cat('<h2>', htmltools::htmlEscape(trimws(row$heading)), '</h2>\n', sep = "")
+  cat('<p>', italicize_binomials(htmltools::htmlEscape(row$body)), '</p>\n', sep = "")
   cat('</div>\n')
 }
 ```
