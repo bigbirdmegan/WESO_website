@@ -1,6 +1,11 @@
 ---
-title: "Western Screech-Owl Field Notes"
+title: "The Coastal Western Screech-Owl Project"
 ---
+
+```{r banner, echo=FALSE, results='asis'}
+source("R/page_helpers.R")
+show_banner("home", "The Coastal Western Screech-Owl Project")
+```
 
 Notes and recordings from Western Screech-Owl (*Megascops kennicottii*) fieldwork on Vancouver Island.
 

@@ -1,0 +1,13 @@
+---
+title: "Publications"
+---
+
+```{r banner, echo=FALSE, results='asis'}
+source("R/page_helpers.R")
+show_banner("publications", "Publications")
+```
+
+*Add your publications here, e.g.:*
+
+- *Author, A., Buers, M., & Author, C. (Year). Title of paper. **Journal Name**, Volume(Issue), pages. [link]*
+- *Author, A., Buers, M., & Author, C. (Year). Title of paper. **Journal Name**, Volume(Issue), pages. [link]*

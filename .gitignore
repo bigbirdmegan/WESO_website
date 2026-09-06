@@ -6,3 +6,7 @@
 # raw inbox for new recordings - R/sync_from_wavs.R copies the ones it
 # processes into www/audio/, which is what actually gets committed
 wavs/
+
+# personal photo library / scratch space - move a resized copy into
+# www/banners/ or www/team/ to actually use one on the site
+data/photos/
