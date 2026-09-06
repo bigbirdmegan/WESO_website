@@ -4,22 +4,31 @@ title: "About"
 
 ```{r setup, echo=FALSE}
 source("R/page_helpers.R")
+team <- as.data.frame(readxl::read_excel("data/team.xlsx"), stringsAsFactors = FALSE)
 ```
 
 ```{r banner, echo=FALSE, results='asis'}
 show_banner("about", "About")
 ```
 
-```{r team, echo=FALSE, results='asis'}
-team_member(
-  "Megan Buers",
-  photo = "meganbuers_bio",
-  bio = "Add your bio here - who you are, your research focus, your connection to Western Screech-Owls, and anything else you'd like visitors to know."
-)
+```{r current-team, echo=FALSE, results='asis'}
+current <- team[tolower(trimws(team$status)) == "current", , drop = FALSE]
+if (nrow(current) > 0) {
+  cat('<h2>Current Team</h2>\n')
+  for (i in seq_len(nrow(current))) {
+    row <- current[i, ]
+    team_member(row$name, bio = row$bio, photo = row$photo)
+  }
+}
+```
 
-team_member(
-  "Team Member Name",
-  photo = NULL,
-  bio = "Add their role and bio here. Copy this whole team_member(...) block for each additional team member - set photo to the filename (without extension) of their photo in www/team/, or leave it as NULL if they don't have one yet."
-)
+```{r alumni, echo=FALSE, results='asis'}
+alumni <- team[tolower(trimws(team$status)) == "alumni", , drop = FALSE]
+if (nrow(alumni) > 0) {
+  cat('<h2>Alumni</h2>\n')
+  for (i in seq_len(nrow(alumni))) {
+    row <- alumni[i, ]
+    team_member(row$name, bio = row$bio, photo = row$photo)
+  }
+}
 ```

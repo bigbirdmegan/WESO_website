@@ -16,6 +16,7 @@ For the website of Megan Amy Buers and her research. A simple R Markdown website
 - `data/call_log.xlsx` - working spreadsheet for writing descriptions of each clip in `wavs/`
 - `R/sync_from_wavs.R` - the main workflow script, see below
 - `about.Rmd` / `publications.Rmd` - the About and Publications pages
+- `data/team.xlsx` - one row per person on the About page (name, status, photo, bio - see below)
 - `www/banners/` - one photo per page for the banner at the top (see below)
 - `www/team/` - headshots for the About page (see below)
 - `www/logo.png` - your logo, shown in the navbar (see below)
@@ -71,17 +72,16 @@ This overwrites the file in place as a compressed JPEG (a couple hundred KB to ~
 
 ## Team members (About page)
 
-Each person on the About page is one `team_member(...)` call inside `about.Rmd`:
+The About page is built from `data/team.xlsx`, one row per person:
 
-```r
-team_member(
-  "Their Name",
-  photo = "their_photo",  # filename (no extension) in www/team/, or NULL for no photo
-  bio = "A sentence or two about them."
-)
-```
+| Column | What goes in it |
+|---|---|
+| `name` | Their name, as shown on the page |
+| `status` | `Current` or `Alumni` - controls which section they appear under |
+| `photo` | Filename (no extension) of their headshot in `www/team/`, e.g. `meganbuers_bio` - leave blank for no photo |
+| `bio` | A sentence or two about them |
 
-To add someone: put their (resized - see above) headshot at `www/team/<something>.jpg`, then copy one of the existing `team_member(...)` blocks in `about.Rmd` and fill in their name/photo/bio.
+To add someone: open `data/team.xlsx`, add a row, save it. If they have a headshot, resize it first (see above) and save it into `www/team/<something>.jpg`, matching whatever you put in the `photo` column. Re-render the site (see below) and they'll show up under Current Team or Alumni automatically - no code editing needed. People move between sections just by changing their `status` cell.
 
 ## Rendering the site
 

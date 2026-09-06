@@ -34,12 +34,12 @@ show_team_photo <- function(name, alt = name) {
 # once per person, e.g.:
 #   team_member("Megan Buers", photo = "meganbuers_bio", bio = "...")
 # `photo` is the filename (without extension) of a photo in www/team/, or
-# leave it NULL if you don't have one yet.
+# leave it NULL/blank if you don't have one yet.
 team_member <- function(name, bio, photo = NULL) {
   cat('<div class="team-member">\n')
-  if (!is.null(photo)) show_team_photo(photo, name)
+  if (!is.null(photo) && !is.na(photo) && nchar(trimws(photo)) > 0) show_team_photo(photo, name)
   cat('<div class="team-bio">\n')
-  cat('<h2>', htmltools::htmlEscape(name), '</h2>\n', sep = "")
+  cat('<h3>', htmltools::htmlEscape(name), '</h3>\n', sep = "")
   cat('<p>', htmltools::htmlEscape(bio), '</p>\n', sep = "")
   cat('</div>\n')
   cat('</div>\n')
