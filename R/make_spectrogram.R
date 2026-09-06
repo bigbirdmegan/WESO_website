@@ -10,8 +10,11 @@
 library(tuneR)
 library(seewave)
 
-make_spectrogram <- function(wav_path, out_png, flim = c(0, 5)) {
+make_spectrogram <- function(wav_path, out_png, flim = c(0, 6)) {
   wave <- readWave(wav_path)
+
+  nyquist_khz <- wave@samp.rate / 2000
+  if (flim[2] > nyquist_khz) flim[2] <- nyquist_khz * 0.98
 
   png(out_png, width = 900, height = 400, res = 120)
   on.exit(dev.off())

@@ -5,32 +5,49 @@ title: "Call Dictionary"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 calls <- read.csv("data/calls.csv", stringsAsFactors = FALSE)
+if (!"context" %in% names(calls)) calls$context <- ""
 ```
 
-A reference guide to Western Screech-Owl calls, with the context each one was heard in. Click play to listen.
+A reference guide to Western Screech-Owl calls, with multiple recorded examples of each. Click play to listen.
 
 ```{r entries, results='asis'}
-for (i in seq_len(nrow(calls))) {
-  call <- calls[i, ]
+call_types <- unique(calls$call_type)
 
-  cat('<div class="call-entry">\n')
-  cat('<h3>', htmltools::htmlEscape(call$call_type), '</h3>\n', sep = "")
-  cat('<p class="call-meta"><strong>', htmltools::htmlEscape(call$context), '</strong>',
-      ' &middot; ', htmltools::htmlEscape(call$location),
-      ' &middot; ', htmltools::htmlEscape(call$date), '</p>\n', sep = "")
+for (ct in call_types) {
+  rows <- calls[calls$call_type == ct, , drop = FALSE]
 
-  spectro_path <- file.path("www/spectrograms", call$spectrogram_file)
-  if (file.exists(spectro_path)) {
-    cat('<img class="spectrogram" src="', spectro_path, '" alt="Spectrogram of ',
-        htmltools::htmlEscape(call$call_type), '">\n', sep = "")
+  cat('<div class="call-type">\n')
+  cat('<h2>', htmltools::htmlEscape(ct), '</h2>\n', sep = "")
+
+  descriptions <- rows$description[!is.na(rows$description) & nchar(trimws(rows$description)) > 0]
+  if (length(descriptions) > 0) {
+    cat('<p class="call-type-description">', htmltools::htmlEscape(descriptions[1]), '</p>\n', sep = "")
   }
 
-  audio_path <- file.path("www/audio", call$audio_file)
-  if (file.exists(audio_path)) {
-    cat('<audio controls preload="none" src="', audio_path, '"></audio>\n', sep = "")
+  for (i in seq_len(nrow(rows))) {
+    row <- rows[i, ]
+    cat('<div class="call-example">\n')
+
+    meta_bits <- c(row$context, row$location, row$date)
+    meta_bits <- meta_bits[!is.na(meta_bits) & nchar(trimws(meta_bits)) > 0]
+    if (length(meta_bits) > 0) {
+      cat('<p class="call-meta">', htmltools::htmlEscape(paste(meta_bits, collapse = " · ")), '</p>\n', sep = "")
+    }
+
+    spectro_path <- file.path("www/spectrograms", row$spectrogram_file)
+    if (file.exists(spectro_path)) {
+      cat('<img class="spectrogram" src="', spectro_path, '" alt="Spectrogram of ',
+          htmltools::htmlEscape(ct), '">\n', sep = "")
+    }
+
+    audio_path <- file.path("www/audio", row$audio_file)
+    if (file.exists(audio_path)) {
+      cat('<audio controls preload="none" src="', audio_path, '"></audio>\n', sep = "")
+    }
+
+    cat('</div>\n')
   }
 
-  cat('<p class="call-description">', htmltools::htmlEscape(call$description), '</p>\n', sep = "")
   cat('</div>\n')
 }
 ```

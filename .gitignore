@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .RDataTmp
+
+# raw inbox for new recordings - R/sync_from_wavs.R copies the ones it
+# processes into www/audio/, which is what actually gets committed
+wavs/
