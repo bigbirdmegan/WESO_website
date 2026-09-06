@@ -2,11 +2,61 @@
 title: "The Coastal Western Screech-Owl Project"
 ---
 
-```{r banner, echo=FALSE, results='asis'}
+```{r setup, echo=FALSE}
 source("R/page_helpers.R")
+sections <- as.data.frame(readxl::read_excel("data/home_content.xlsx", sheet = "sections"), stringsAsFactors = FALSE)
+news <- as.data.frame(readxl::read_excel("data/home_content.xlsx", sheet = "news"), stringsAsFactors = FALSE)
+partners <- as.data.frame(readxl::read_excel("data/home_content.xlsx", sheet = "partners"), stringsAsFactors = FALSE)
+```
+
+```{r banner, echo=FALSE, results='asis'}
 show_banner("home", "The Coastal Western Screech-Owl Project")
 ```
 
-Notes and recordings from Western Screech-Owl (*Megascops kennicottii*) fieldwork on Vancouver Island.
-
 See the **Call Dictionary** tab for a reference guide to the different calls, with spectrograms, audio, and the context each one was heard in.
+
+```{r sections, echo=FALSE, results='asis'}
+for (i in seq_len(nrow(sections))) {
+  row <- sections[i, ]
+  featured <- identical(row$heading, "Our Goal")
+  div_class <- if (featured) "home-section home-section-featured" else "home-section"
+  cat('<div class="', div_class, '">\n', sep = "")
+  cat('<h2>', htmltools::htmlEscape(row$heading), '</h2>\n', sep = "")
+  cat('<p>', htmltools::htmlEscape(row$body), '</p>\n', sep = "")
+  cat('</div>\n')
+}
+```
+
+```{r news, echo=FALSE, results='asis'}
+if (nrow(news) > 0) {
+  news <- news[order(news$date, decreasing = TRUE), , drop = FALSE]
+  cat('<h2>News &amp; Updates</h2>\n')
+  cat('<div class="news-list">\n')
+  for (i in seq_len(nrow(news))) {
+    row <- news[i, ]
+    has_url <- !is.null(row$url) && !is.na(row$url) && nchar(trimws(row$url)) > 0
+    cat('<div class="news-item">\n')
+    cat('<span class="news-date">', htmltools::htmlEscape(format(row$date)), '</span>\n', sep = "")
+    if (has_url) {
+      cat('<span class="news-update"><a href="', htmltools::htmlEscape(row$url),
+          '" target="_blank" rel="noopener">', htmltools::htmlEscape(row$update), '</a></span>\n', sep = "")
+    } else {
+      cat('<span class="news-update">', htmltools::htmlEscape(row$update), '</span>\n', sep = "")
+    }
+    cat('</div>\n')
+  }
+  cat('</div>\n')
+}
+```
+
+```{r partners, echo=FALSE, results='asis'}
+if (nrow(partners) > 0) {
+  cat('<h2>Partners</h2>\n')
+  cat('<div class="partners-row">\n')
+  for (i in seq_len(nrow(partners))) {
+    row <- partners[i, ]
+    partner_item(row$name, logo = row$logo, url = row$url)
+  }
+  cat('</div>\n')
+}
+```

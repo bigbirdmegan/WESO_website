@@ -10,3 +10,7 @@ wavs/
 # personal photo library / scratch space - move a resized copy into
 # www/banners/ or www/team/ to actually use one on the site
 data/photos/
+
+# raw/original logo files - processed copies live at www/logo.png and
+# www/partners/<name>.png (see R/resize_image.R)
+logos/

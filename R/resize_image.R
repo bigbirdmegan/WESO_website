@@ -15,3 +15,13 @@ resize_for_web <- function(path, max_width = 1600, quality = 82) {
   image_write(img, path, quality = quality)
   cat(path, "->", format(file.info(path)$size / 1024, digits = 3), "KB\n")
 }
+
+# Same idea, but keeps transparency (PNG) - use this for logos, where a
+# white/opaque background would look wrong against the site's colors.
+resize_png_for_web <- function(path, out_path = path, max_width = 800) {
+  img <- image_read(path)
+  img <- image_resize(img, paste0(max_width, "x"))
+  img <- image_convert(img, format = "png")
+  image_write(img, out_path)
+  cat(out_path, "->", format(file.info(out_path)$size / 1024, digits = 3), "KB\n")
+}

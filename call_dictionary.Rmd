@@ -13,7 +13,11 @@ if (!"context" %in% names(calls)) calls$context <- ""
 show_banner("call_dictionary", "Call Dictionary")
 ```
 
-A reference guide to Western Screech-Owl calls, with multiple recorded examples of each. Click play to listen.
+** IN PROGRESS ** This call dictionary is currently under construction and is a 
+collaboration between the biologists whom study Western Screech-owls across British
+Columbia, Canada.
+
+More info to come.
 
 ```{r entries, results='asis'}
 call_types <- unique(calls$call_type)

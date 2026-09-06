@@ -47,7 +47,7 @@ body {
   flex-shrink: 0;
 }
 
-.team-bio h2 {
+.team-bio h3 {
   margin-top: 0;
   margin-bottom: 0.25rem;
 }
@@ -58,6 +58,66 @@ body {
     align-items: center;
     text-align: center;
   }
+}
+
+.home-section {
+  margin-bottom: 1.5rem;
+}
+
+.home-section h2 {
+  margin-bottom: 0.25rem;
+}
+
+.home-section-featured {
+  text-align: center;
+  padding: 0.5rem 1.5rem 1rem;
+}
+
+.home-section-featured p {
+  font-style: italic;
+  font-size: 1.15rem;
+}
+
+.news-list {
+  margin-bottom: 1.5rem;
+}
+
+.news-item {
+  display: flex;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.news-item:last-child {
+  border-bottom: none;
+}
+
+.news-date {
+  color: #666;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+  width: 6.5rem;
+}
+
+.partners-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.partner-logo {
+  max-height: 60px;
+  max-width: 160px;
+  object-fit: contain;
+}
+
+.partner-name {
+  font-size: 0.95rem;
+  color: #555;
 }
 
 .call-type {

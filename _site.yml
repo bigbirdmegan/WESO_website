@@ -1,7 +1,7 @@
 name: "WESOke"
 title: "The Coastal Western Screech-Owl Project"
 output_dir: "docs"
-exclude: ["R", "README.md", "WESOke_Website.Rproj", "wavs", "spectograms", "data"]
+exclude: ["R", "README.md", "WESOke_Website.Rproj", "wavs", "spectograms", "data", "logos"]
 navbar:
   title: "The Coastal Western Screech-Owl Project"
   left:
