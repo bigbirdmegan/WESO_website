@@ -26,6 +26,7 @@ make_spectrogram <- function(wav_path, out_png, flim = c(0, 6)) {
     scale = FALSE,
     palette = seewave::reverse.gray.colors.1,
     grid = FALSE,
-    collevels = seq(-40, 0, 1)
+    collevels = seq(-70, 0, 1) # most call energy sits around -70 to -40 dB;
+    # a narrower range (e.g. -40 to 0) crushes almost all of it to background
   )
 }
