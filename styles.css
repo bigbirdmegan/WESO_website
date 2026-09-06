@@ -1,0 +1,40 @@
+body {
+  max-width: 800px;
+}
+
+.call-entry {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.call-entry:last-child {
+  border-bottom: none;
+}
+
+.call-entry h3 {
+  margin-bottom: 0.15rem;
+}
+
+.call-meta {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+.spectrogram {
+  display: block;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin: 0.5rem 0;
+}
+
+.call-entry audio {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0.5rem 0;
+}
+
+.call-description {
+  margin-top: 0.5rem;
+}

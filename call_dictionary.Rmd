@@ -1,0 +1,36 @@
+---
+title: "Call Dictionary"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+calls <- read.csv("data/calls.csv", stringsAsFactors = FALSE)
+```
+
+A reference guide to Western Screech-Owl calls, with the context each one was heard in. Click play to listen.
+
+```{r entries, results='asis'}
+for (i in seq_len(nrow(calls))) {
+  call <- calls[i, ]
+
+  cat('<div class="call-entry">\n')
+  cat('<h3>', htmltools::htmlEscape(call$call_type), '</h3>\n', sep = "")
+  cat('<p class="call-meta"><strong>', htmltools::htmlEscape(call$context), '</strong>',
+      ' &middot; ', htmltools::htmlEscape(call$location),
+      ' &middot; ', htmltools::htmlEscape(call$date), '</p>\n', sep = "")
+
+  spectro_path <- file.path("www/spectrograms", call$spectrogram_file)
+  if (file.exists(spectro_path)) {
+    cat('<img class="spectrogram" src="', spectro_path, '" alt="Spectrogram of ',
+        htmltools::htmlEscape(call$call_type), '">\n', sep = "")
+  }
+
+  audio_path <- file.path("www/audio", call$audio_file)
+  if (file.exists(audio_path)) {
+    cat('<audio controls preload="none" src="', audio_path, '"></audio>\n', sep = "")
+  }
+
+  cat('<p class="call-description">', htmltools::htmlEscape(call$description), '</p>\n', sep = "")
+  cat('</div>\n')
+}
+```

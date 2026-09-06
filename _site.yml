@@ -1,0 +1,16 @@
+name: "WESOke"
+title: "Western Screech-Owl Field Notes"
+output_dir: "docs"
+exclude: ["R", "README.md", "WESOke_Website.Rproj"]
+navbar:
+  title: "WESOke"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Call Dictionary"
+      href: call_dictionary.html
+output:
+  html_document:
+    theme: flatly
+    css: styles.css
+    toc: false
