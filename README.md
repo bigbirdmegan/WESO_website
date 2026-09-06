@@ -1,6 +1,6 @@
 # WESOke Website
 
-A simple R Markdown website with a Western Screech-Owl call dictionary page.
+For the website of Megan Amy Buers and her research. A simple R Markdown website with a Western Screech-Owl call dictionary page.
 
 ## Structure
 
@@ -41,3 +41,4 @@ This writes the HTML into `docs/`, which is what GitHub Pages serves.
 1. Create a new GitHub repo and push this project to it.
 2. On GitHub: **Settings > Pages** > set source to the `main` branch, `/docs` folder.
 3. Add an empty `docs/.nojekyll` file (already included) so GitHub doesn't try to run Jekyll over the site.
+4. In the repo's **Settings > Pages**, set the custom domain to `kennicottii.ca` (this also verifies the `CNAME` file at the project root, which `render_site()` copies into `docs/` on every build).
