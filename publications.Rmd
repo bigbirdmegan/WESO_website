@@ -7,7 +7,7 @@ source("R/page_helpers.R")
 show_banner("publications", "Publications")
 ```
 
-*Add your publications here, e.g.:*
+** IN PROGRESS ** This page is currently under construction. Publications from the
+Coastal Western Screech-Owl Project will be added here as they become available.
 
-- *Author, A., Buers, M., & Author, C. (Year). Title of paper. **Journal Name**, Volume(Issue), pages. [link]*
-- *Author, A., Buers, M., & Author, C. (Year). Title of paper. **Journal Name**, Volume(Issue), pages. [link]*
+More info to come.
