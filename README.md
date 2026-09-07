@@ -64,6 +64,10 @@ Banners can be `.jpg`, `.jpeg`, `.png`, or `.webp`. They're displayed at a fixed
 
 The logo must be named exactly `www/logo.png` (see the `.navbar-brand` rule in `styles.css` if you want to use a different filename/format).
 
+## Page background (margins)
+
+The content column is centered and capped at 800px wide; whatever's outside it (the margins on either side, and above/below on short pages) shows `www/margin_bg.jpg` if present, or a solid fallback color otherwise. To change it: drop an image in as `www/margin_bg.jpg` (`.png`/`.webp` also work, just update the filename in the `html` rule in `styles.css`) and re-render - it's stretched to cover (`background-size: cover`), so a single photo/texture works better than something with important detail near the edges. To change just the fallback color (shown while the image loads, or if there's no image), edit the `background-color` value in that same `html` rule.
+
 **Before adding a banner/team photo, shrink it for the web** - phone/camera photos are often 5-10MB at full resolution, way more than a webpage needs:
 
 ```r

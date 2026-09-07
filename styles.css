@@ -1,5 +1,19 @@
+/* margin background - shows through on either side of the centered
+   content column (and above/below, on short pages). Drop a file in as
+   www/margin_bg.jpg (or .png/.webp) to change it; #8a7159 is the fallback
+   color shown while it loads or if the file's missing. */
+html {
+  background-color: #8a7159;
+  background-image: url('www/margin_bg.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
 body {
   max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
 /* logo in the navbar - drop your file in as www/logo.png */
