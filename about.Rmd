@@ -14,7 +14,7 @@ show_banner("about", "About")
 ```{r current-team, echo=FALSE, results='asis'}
 current <- team[tolower(trimws(team$status)) == "current", , drop = FALSE]
 if (nrow(current) > 0) {
-  cat('<h2>Current Team</h2>\n')
+  cat('<h2 class="team-section-heading">Current Team</h2>\n')
   for (i in seq_len(nrow(current))) {
     row <- current[i, ]
     team_member(row$name, bio = row$bio, photo = row$photo)
@@ -25,7 +25,7 @@ if (nrow(current) > 0) {
 ```{r alumni, echo=FALSE, results='asis'}
 alumni <- team[tolower(trimws(team$status)) == "alumni", , drop = FALSE]
 if (nrow(alumni) > 0) {
-  cat('<h2>Alumni</h2>\n')
+  cat('<h2 class="team-section-heading">Alumni</h2>\n')
   for (i in seq_len(nrow(alumni))) {
     row <- alumni[i, ]
     team_member(row$name, bio = row$bio, photo = row$photo)

@@ -20,7 +20,11 @@ Columbia, Canada.
 More info to come.
 
 ```{r entries, results='asis'}
-call_types <- unique(calls$call_type)
+type_order <- c("Song", "Double Trill", "Barking", "Begging", "Food Delivery Call", "Whinny")
+all_types <- unique(calls$call_type)
+known <- intersect(type_order, all_types)
+unlisted <- setdiff(all_types, c(type_order, "Abnormal Vocalisations"))
+call_types <- c(known, unlisted, intersect("Abnormal Vocalisations", all_types))
 
 for (ct in call_types) {
   rows <- calls[calls$call_type == ct, , drop = FALSE]
@@ -37,10 +41,21 @@ for (ct in call_types) {
     row <- rows[i, ]
     cat('<div class="call-example">\n')
 
-    meta_bits <- c(row$context, row$location, row$date)
-    meta_bits <- meta_bits[!is.na(meta_bits) & nchar(trimws(meta_bits)) > 0]
-    if (length(meta_bits) > 0) {
-      cat('<p class="call-meta">', htmltools::htmlEscape(paste(meta_bits, collapse = " · ")), '</p>\n', sep = "")
+    meta_parts <- c()
+    if (!is.na(row$context) && nchar(trimws(row$context)) > 0) {
+      meta_parts <- c(meta_parts, htmltools::htmlEscape(row$context))
+    }
+    if ("subspecies" %in% names(row) && !is.na(row$subspecies) && nchar(trimws(row$subspecies)) > 0) {
+      meta_parts <- c(meta_parts, paste0("<em>", htmltools::htmlEscape(row$subspecies), "</em>"))
+    }
+    if (!is.na(row$location) && nchar(trimws(row$location)) > 0) {
+      meta_parts <- c(meta_parts, htmltools::htmlEscape(row$location))
+    }
+    if (!is.na(row$date) && nchar(trimws(row$date)) > 0) {
+      meta_parts <- c(meta_parts, htmltools::htmlEscape(row$date))
+    }
+    if (length(meta_parts) > 0) {
+      cat('<p class="call-meta">', paste(meta_parts, collapse = " · "), '</p>\n', sep = "")
     }
 
     spectro_path <- file.path("www/spectrograms", row$spectrogram_file)

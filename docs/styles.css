@@ -42,6 +42,11 @@ body {
   }
 }
 
+.team-section-heading {
+  text-align: center;
+  font-style: italic;
+}
+
 .team-member {
   display: flex;
   gap: 1.5rem;

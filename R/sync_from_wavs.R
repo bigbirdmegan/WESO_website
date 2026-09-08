@@ -41,13 +41,17 @@ guess_call_type <- function(filename) {
 
 wav_files <- list.files(wav_dir, pattern = "\\.wav$", ignore.case = TRUE)
 
-log_cols <- c("filename", "call_type", "context", "location", "date", "description")
+log_cols <- c("filename", "subspecies", "call_type", "context", "location", "date", "description")
 if (file.exists(log_path)) {
   existing <- as.data.frame(read_excel(log_path), stringsAsFactors = FALSE)
   # tolerate columns you've removed by hand (e.g. deleted "context") - add
   # them back blank rather than erroring, so you can refill them later
   missing_cols <- setdiff(log_cols, names(existing))
   for (col in missing_cols) existing[[col]] <- ""
+  # dates can come back as actual Date objects (if Excel auto-formatted a
+  # cell) or as plain text - normalize to text so rbind-ing with new blank
+  # rows below doesn't crash on mismatched column types
+  existing$date <- ifelse(is.na(existing$date), "", format(existing$date))
 } else {
   existing <- setNames(data.frame(matrix(nrow = 0, ncol = length(log_cols))), log_cols)
 }
@@ -64,6 +68,7 @@ for (f in new_files) {
 if (length(new_files) > 0) {
   new_rows <- data.frame(
     filename = new_files,
+    subspecies = "",
     call_type = vapply(new_files, guess_call_type, character(1)),
     context = "",
     location = "",
@@ -84,6 +89,7 @@ cat("Call log:", log_path, "(", nrow(log), "entries )\n")
 # contents of the spreadsheet, including anything you've typed in.
 calls <- data.frame(
   id = seq_len(nrow(log)),
+  subspecies = log$subspecies,
   call_type = log$call_type,
   context = log$context,
   location = log$location,
