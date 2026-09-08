@@ -78,7 +78,7 @@ team_member <- function(name, bio, photo = NULL) {
   if (!is.null(photo) && !is.na(photo) && nchar(trimws(photo)) > 0) show_team_photo(photo, name)
   cat('<div class="team-bio">\n')
   cat('<h3>', htmltools::htmlEscape(name), '</h3>\n', sep = "")
-  cat('<p>', htmltools::htmlEscape(bio), '</p>\n', sep = "")
+  cat('<p>', italicize_binomials(htmltools::htmlEscape(bio)), '</p>\n', sep = "")
   cat('</div>\n')
   cat('</div>\n')
 }
