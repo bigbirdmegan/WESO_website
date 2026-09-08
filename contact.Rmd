@@ -1,0 +1,16 @@
+---
+title: "Contact"
+---
+
+```{r banner, echo=FALSE, results='asis'}
+source("R/page_helpers.R")
+show_banner("contact", "Contact")
+```
+
+If you would like to get in touch with the team about the Coastal Western Screech-Owl Project, we'd love to hear from you - please reach out using the button below.
+
+<div class="contact-button-wrap">
+<a class="btn btn-primary contact-button" href="mailto:meganbuers@kennicottii.ca">Email the Team</a>
+</div>
+
+<p class="centered-italic">Follow us <a href="https://www.instagram.com/screechscience/" target="_blank" rel="noopener">@screechscience</a> on Instagram</p>

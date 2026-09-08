@@ -61,6 +61,7 @@ Drop image files in with these exact names and they'll show up automatically nex
 | `www/banners/about.jpg` | Top of the About page |
 | `www/banners/call_dictionary.jpg` | Top of the Call Dictionary page |
 | `www/banners/publications.jpg` | Top of the Publications page |
+| `www/banners/contact.jpg` | Top of the Contact page |
 | `www/logo.png` | Small icon in the navbar, next to the site name |
 
 Banners can be `.jpg`, `.jpeg`, `.png`, or `.webp`. They're displayed at a fixed height (320px) and cropped to fit, so landscape photos work best. A page with no banner file just skips it - nothing breaks.

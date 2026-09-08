@@ -13,6 +13,8 @@ navbar:
       href: call_dictionary.html
     - text: "Publications"
       href: publications.html
+    - text: "Contact"
+      href: contact.html
 output:
   html_document:
     theme: sandstone

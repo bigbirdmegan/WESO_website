@@ -16,6 +16,22 @@ body {
   background-color: #fff;
 }
 
+/* reusable centered/italic line - e.g. the Instagram callout on Contact */
+.centered-italic {
+  text-align: center;
+  font-style: italic;
+}
+
+.contact-button-wrap {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.contact-button {
+  font-size: 1.1rem;
+  padding: 0.6rem 1.5rem;
+}
+
 /* logo in the navbar - drop your file in as www/logo.png */
 .navbar-brand {
   background-image: url('www/logo.png');
