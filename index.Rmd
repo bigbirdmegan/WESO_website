@@ -22,7 +22,12 @@ for (i in seq_len(nrow(sections))) {
   div_class <- if (featured) "home-section home-section-featured" else "home-section"
   cat('<div class="', div_class, '">\n', sep = "")
   if (!featured) cat('<h2>', htmltools::htmlEscape(trimws(row$heading)), '</h2>\n', sep = "")
-  cat('<p>', italicize_binomials(htmltools::htmlEscape(row$body)), '</p>\n', sep = "")
+  goal_photo <- if (featured) find_image("www", "goal_photo") else NULL
+  if (!is.null(goal_photo)) {
+    cat('<img class="goal-photo" src="', goal_photo, '" alt="', htmltools::htmlEscape(trimws(row$heading)), '">\n', sep = "")
+  } else {
+    cat('<p>', italicize_binomials(htmltools::htmlEscape(row$body)), '</p>\n', sep = "")
+  }
   cat('</div>\n')
 }
 ```

@@ -101,12 +101,20 @@ body {
 }
 
 .home-section h2 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
 }
 
 .home-section-featured {
   text-align: center;
   padding: 1rem 1.5rem 1.5rem;
+}
+
+.goal-photo {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 4px;
 }
 
 .home-section-featured p {

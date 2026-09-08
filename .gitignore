@@ -14,3 +14,6 @@ data/photos/
 # raw/original logo files - processed copies live at www/logo.png and
 # www/partners/<name>.png (see R/resize_image.R)
 logos/
+
+# local dev-server config, not part of the site
+.claude/
