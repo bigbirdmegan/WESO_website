@@ -124,6 +124,37 @@ To add someone: open `data/team.xlsx`, add a row, save it. If they have a headsh
 
 Edit any sheet, save, and re-render - no code changes needed for new rows.
 
+## ARU Review beta download (password protected)
+
+`aru_review_beta.Rmd` → `kennicottii.ca/aru_review_beta.html`. It isn't in the navbar (testers
+get the link directly), and `robots.txt` asks search engines not to list it.
+
+**How the password works:** this repo is public, so a plain password box would be decoration
+(anyone could read the link in the page source). Instead, the download link is stored
+**encrypted** in `data/beta_locked.json` (AES-256-GCM; key from the password via
+PBKDF2-SHA256, 600,000 rounds), and the visitor's browser decrypts it only with the right
+password. The password is never stored anywhere. With no `data/beta_locked.json`, the page
+says no download is available.
+
+**To set it up or change the link/password:**
+
+1. Upload the zip (e.g. `ARU_Review_0.3.0_beta_Windows.zip`) to OneDrive. Right-click it,
+   **Share**, set it to **Anyone with the link**, and **Copy link**. (The zip is too big for
+   GitHub's 100 MB limit, and anything in this repo is public anyway.)
+2. Open `tools/lock_beta_download.html` in Chrome or Edge (double-click it). It's a local tool,
+   not part of the site. Paste the link, choose a password (a few random words, 12+
+   characters), click **Lock**, then **Test unlock**, then **Save as beta_locked.json**.
+3. Move the saved file into `data/` as `data/beta_locked.json`.
+4. Build the site (below), then commit and push.
+5. Send testers the page link and, **separately**, the password (e.g. one by email, one by text).
+
+**To shut the beta:** delete `data/beta_locked.json`, rebuild and push, and stop sharing the
+file in OneDrive. Changing the password means re-running the lock tool. Note that anyone who
+already has the OneDrive link can still use it until you stop sharing it there.
+
+**If you build from the R console instead of RStudio** and `docs/.nojekyll` disappears,
+restore it with `git checkout -- docs/.nojekyll`. GitHub Pages needs it to serve `site_libs/`.
+
 ## Rendering the site
 
 In RStudio: **Build > Build Website**, or from the console:

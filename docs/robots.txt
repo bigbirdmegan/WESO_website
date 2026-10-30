@@ -1,0 +1,3 @@
+# Keep the invite-only beta page out of search results.
+User-agent: *
+Disallow: /aru_review_beta.html

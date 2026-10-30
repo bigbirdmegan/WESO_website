@@ -1,0 +1,8 @@
+{
+  "format": "aru-beta-lock/1",
+  "kdf": "PBKDF2-SHA256",
+  "iterations": 600000,
+  "salt": "cZCeSQz+ozJUIeeePBesig==",
+  "iv": "rQ89twRz7lii+3TU",
+  "ciphertext": "VfwO2en/zaxQi2DSbsdMHeIkDgRgMvJnPeSCf5LDmdo4ZNZfkDmsxWmqGCX3yNoLJtNSRHNElx3BcCEUuV+VYdiLgg5Nzpm/fcbGihK7ndHBwqMbDlr8azEFP+JKN+8CsIXb3YXGBNOWbB9Yua3aQw60P8P6z7EYEblZHgEvKZePR7wnrfbUt0xywcLoViOlBpG1fdHTJVHnz5DS3pI7tDqGkGDB4e2xudraMikgpiWu2USGZisHHeOLJZOsvUI74Yxqyl69c6Pzlxa5KBKSC7OdYsXw8uxZmXefa9h0PG52/fvdEhub0NaFZfHK8+EEftGHKyjz3S+HEQJ169FbFQ=="
+}

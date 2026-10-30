@@ -1,0 +1,131 @@
+---
+title: "ARU Review: beta testing"
+---
+
+```{r setup, echo=FALSE, results='asis'}
+# Password-protected beta download.
+# The download link is NOT in this file or anywhere in the public repo in readable form:
+# data/beta_locked.json holds it encrypted (AES-256-GCM, key from the password via
+# PBKDF2-SHA256, 600,000 rounds). Make or replace that file with tools/lock_beta_download.html,
+# then rebuild the site. The visitor's browser decrypts it only if they type the right password.
+source("R/page_helpers.R")
+show_banner("aru_review_beta", "ARU Review beta")
+lock_file <- "data/beta_locked.json"
+if (file.exists(lock_file)) {
+  locked <- jsonlite::fromJSON(lock_file)
+  cat('<script id="beta-lock" type="application/json">',
+      jsonlite::toJSON(locked, auto_unbox = TRUE), '</script>\n', sep = "")
+}
+has_lock <- file.exists(lock_file)
+```
+
+<div class="beta-gate">
+
+This page is for **invited beta testers** of a desktop app for reviewing acoustic recorder (ARU)
+detections. If you've been invited, enter the password you were given.
+
+```{r gate, echo=FALSE, results='asis'}
+if (has_lock) {
+  # No indentation: pandoc would treat indented lines as a code block.
+  cat('<form id="beta-form" class="beta-form" autocomplete="off">',
+      '<label for="beta-pw">Password</label>',
+      '<div class="beta-row">',
+      '<input id="beta-pw" type="password" required>',
+      '<button type="submit" class="btn btn-primary">Unlock</button>',
+      '</div>',
+      '<p id="beta-msg" class="beta-msg" role="status" aria-live="polite"></p>',
+      '</form>', sep = "\n")
+} else {
+  cat('<p class="beta-msg"><em>No beta download is available right now.</em></p>\n')
+}
+```
+
+</div>
+
+<div id="beta-content" class="beta-content" hidden>
+
+<div class="beta-notice">
+**THIS IS A BETA VERSION FOR TESTING ONLY.** Results are still being checked against pycnet and
+Kaleidoscope. Please don't use its outputs for reports, publications or management decisions yet,
+and please don't share the download link or password.
+</div>
+
+**ARU Review** runs PNW-Cnet (via pycnet-audio) on your recordings, lets you listen to and verify each
+detection with customizable tags, and summarizes the verified results into Excel, maps and graphs, all
+in one desktop window with no coding. Everything runs on your own computer; nothing is uploaded.
+
+<div class="contact-button-wrap">
+<a id="beta-download" class="btn btn-primary contact-button" href="#" target="_blank" rel="noopener">Download</a>
+<p id="beta-details" class="beta-details"></p>
+</div>
+
+### Getting started
+
+1. Download the zip (Windows 10 or 11) and **unzip it** somewhere permanent, such as Documents.
+2. Open **`Setup guide.html`** inside it. It walks you through the one-time pycnet install (about
+   20 minutes) and your first run.
+3. The first time you open `ARU Review.exe`, Windows may say *"Windows protected your PC"*. Click
+   **More info**, then **Run anyway**. This appears because the beta isn't signed with a paid publisher
+   certificate.
+
+### Feedback
+
+Anything that's confusing, slow, broken or missing is useful, especially results that don't match what
+you'd expect. If something goes wrong during a scan, the **Copy log** button on the Scan tab copies the
+technical details to paste into an email.
+
+<div class="contact-button-wrap">
+<a class="btn btn-default" href="mailto:meganbuers@kennicottii.ca?subject=ARU%20Review%20beta%20feedback">Send feedback</a>
+</div>
+
+<p class="beta-small">ARU Review is free software under GPL-3.0; the source code is included in the download.
+Species identification is by PNW-Cnet (Ruff, Lesmeister, Jenkins &amp; Sullivan 2023, <em>SoftwareX</em>
+23:101473) via pycnet-audio. ARU Review is not developed or endorsed by the USDA Forest Service.</p>
+
+</div>
+
+<script>
+(function () {
+  var lockEl = document.getElementById("beta-lock");
+  var form = document.getElementById("beta-form");
+  if (!lockEl || !form) return;
+  var locked = JSON.parse(lockEl.textContent);
+  var msg = document.getElementById("beta-msg");
+  var unb64 = function (s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); };
+
+  if (!window.crypto || !crypto.subtle) {
+    msg.textContent = "This page needs a current web browser (Chrome, Edge, Firefox or Safari).";
+    return;
+  }
+
+  async function unlock(password) {
+    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+    var key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", hash: "SHA-256", salt: unb64(locked.salt), iterations: locked.iterations },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(locked.iv) }, key, unb64(locked.ciphertext));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var btn = form.querySelector("button");
+    btn.disabled = true;
+    msg.className = "beta-msg";
+    msg.textContent = "Checking…";
+    try {
+      var d = await unlock(document.getElementById("beta-pw").value);
+      document.getElementById("beta-download").href = d.link;
+      document.getElementById("beta-download").textContent = "Download ARU Review " + (d.version || "");
+      document.getElementById("beta-details").textContent =
+        [d.size, "Windows 10/11", d.locked ? "updated " + d.locked : ""].filter(Boolean).join(" · ");
+      document.querySelector(".beta-gate").hidden = true;
+      document.getElementById("beta-content").hidden = false;
+    } catch (err) {
+      msg.className = "beta-msg beta-bad";
+      msg.textContent = "That password didn't work. Please check it and try again.";
+      btn.disabled = false;
+    }
+  });
+})();
+</script>

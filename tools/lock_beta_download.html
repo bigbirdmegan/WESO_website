@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lock beta download</title>
+<!--
+  LOCAL TOOL - not part of the website (tools/ is excluded in _site.yml).
+  Open this file in your browser, paste the OneDrive share link and choose a password.
+  It produces data/beta_locked.json: the link encrypted with AES-256-GCM, key derived
+  from your password with PBKDF2-SHA256 (600,000 rounds). The password itself is never
+  saved anywhere. aru_review_beta.Rmd decrypts it in the visitor's browser.
+-->
+<style>
+  :root { --bg:#fbfaf7; --ink:#1d1a16; --muted:#5d564c; --line:#d9d2c6; --accent:#7a5c3e; --ok:#1d6b3a; --bad:#a3302a; --field:#fff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#1b1916; --ink:#f0ece4; --muted:#bdb4a6; --line:#3b362f; --accent:#c49a6c; --ok:#5fbf7f; --bad:#e3766e; --field:#25221e; } }
+  body { background:var(--bg); color:var(--ink); font:16px/1.55 system-ui, "Segoe UI", sans-serif; margin:0; }
+  main { max-width:680px; margin:0 auto; padding:28px 16px 60px; }
+  h1 { font-size:1.5rem; margin:0 0 4px; }
+  p.lead { color:var(--muted); margin-top:0; }
+  label { display:block; font-weight:600; margin:16px 0 4px; }
+  .hint { color:var(--muted); font-size:.9rem; font-weight:400; }
+  input, textarea { width:100%; box-sizing:border-box; padding:9px 10px; border:1px solid var(--line); border-radius:6px; background:var(--field); color:var(--ink); font:inherit; }
+  textarea { font-family:Consolas, monospace; font-size:.85rem; min-height:110px; }
+  button { margin-top:18px; padding:10px 18px; border:0; border-radius:6px; background:var(--accent); color:#fff; font:inherit; font-weight:600; cursor:pointer; }
+  button.secondary { background:transparent; color:var(--accent); border:1px solid var(--accent); margin-left:8px; }
+  #msg { margin-top:14px; font-weight:600; }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  ol li { margin-bottom:6px; }
+  .box { border:1px solid var(--line); border-radius:8px; padding:4px 16px; margin-top:22px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Lock the beta download</h1>
+<p class="lead">Encrypts the download link with a password for the ARU Review beta page. Everything happens
+in this browser window; nothing is sent anywhere, and the password isn't saved.</p>
+
+<label for="link">OneDrive share link to the zip
+  <span class="hint">(OneDrive: right-click the zip, Share, "Anyone with the link", Copy link)</span></label>
+<input id="link" type="url" placeholder="https://1drv.ms/u/...">
+
+<label for="version">Version shown on the page</label>
+<input id="version" value="0.3.0 beta">
+
+<label for="size">Download size shown on the page</label>
+<input id="size" value="118 MB">
+
+<label for="pw">Password <span class="hint">(at least 12 characters; a few random words is best,
+  e.g. "cedar-trill-mossy-lantern")</span></label>
+<input id="pw" type="password" autocomplete="new-password">
+
+<label for="pw2">Type the password again</label>
+<input id="pw2" type="password" autocomplete="new-password">
+
+<button id="lock">Lock</button>
+
+<div id="msg" role="status"></div>
+
+<div id="result" hidden>
+  <label for="out">Locked file contents</label>
+  <textarea id="out" readonly></textarea>
+  <button id="save">Save as beta_locked.json</button><button class="secondary" id="test">Test unlock</button>
+  <div class="box">
+    <p><b>Next:</b></p>
+    <ol>
+      <li>Save the file into the website's <code>data</code> folder as <code>beta_locked.json</code>
+        (replace the old one if there is one).</li>
+      <li>In RStudio: <b>Build &gt; Build Website</b> (or <code>rmarkdown::render_site()</code>).</li>
+      <li>Commit and push as usual. The page is at <code>kennicottii.ca/aru_review_beta.html</code>.</li>
+      <li>Send testers the page link and, <b>separately</b>, the password (e.g. one by email and one by text).</li>
+    </ol>
+  </div>
+</div>
+</main>
+
+<script>
+const ITER = 600000;
+const enc = new TextEncoder();
+const b64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+const $ = id => document.getElementById(id);
+
+async function deriveKey(password, salt, iterations) {
+  const base = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey({ name: "PBKDF2", hash: "SHA-256", salt, iterations },
+    base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+}
+
+function say(text, cls) { $("msg").textContent = text; $("msg").className = cls || ""; }
+
+if (!window.crypto || !crypto.subtle) {
+  say("This browser won't run encryption on this page. Open the file in Chrome or Edge instead " +
+      "(right-click it, Open with).", "bad");
+  $("lock").disabled = true;
+}
+
+$("lock").addEventListener("click", async () => {
+  const link = $("link").value.trim(), pw = $("pw").value;
+  if (!/^https:\/\//.test(link)) return say("Paste the full share link (starting with https://).", "bad");
+  if (pw.length < 12) return say("Please use a password of at least 12 characters.", "bad");
+  if (pw !== $("pw2").value) return say("The two passwords don't match.", "bad");
+  say("Locking…");
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(pw, salt, ITER);
+  const payload = JSON.stringify({ link, version: $("version").value.trim(), size: $("size").value.trim(),
+                                   locked: new Date().toISOString().slice(0, 10) });
+  const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(payload));
+  const out = { format: "aru-beta-lock/1", kdf: "PBKDF2-SHA256", iterations: ITER,
+                salt: b64(salt), iv: b64(iv), ciphertext: b64(ct) };
+  $("out").value = JSON.stringify(out, null, 2);
+  $("result").hidden = false;
+  $("pw2").value = "";
+  say("Locked. Save the file, then rebuild the website.", "ok");
+});
+
+$("save").addEventListener("click", () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([$("out").value + "\n"], { type: "application/json" }));
+  a.download = "beta_locked.json";
+  a.click();
+});
+
+$("test").addEventListener("click", async () => {
+  try {
+    const d = JSON.parse($("out").value);
+    const key = await deriveKey($("pw").value, unb64(d.salt), d.iterations);
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(d.iv) }, key, unb64(d.ciphertext));
+    const p = JSON.parse(new TextDecoder().decode(plain));
+    say("Unlock works. It opens: " + p.link, "ok");
+  } catch (e) {
+    say("Unlock failed. Re-type the password above and try again.", "bad");
+  }
+});
+</script>
+</body>
+</html>

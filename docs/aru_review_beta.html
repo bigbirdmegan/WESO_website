@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ARU Review: beta testing</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">The Coastal Western Screech-Owl Project</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="call_dictionary.html">Call Dictionary</a>
+</li>
+<li>
+  <a href="publications.html">Publications</a>
+</li>
+<li>
+  <a href="contact.html">Contact</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">ARU Review: beta testing</h1>
+
+</div>
+
+
+<script id="beta-lock" type="application/json">{"format":"aru-beta-lock/1","kdf":"PBKDF2-SHA256","iterations":600000,"salt":"cZCeSQz+ozJUIeeePBesig==","iv":"rQ89twRz7lii+3TU","ciphertext":"VfwO2en/zaxQi2DSbsdMHeIkDgRgMvJnPeSCf5LDmdo4ZNZfkDmsxWmqGCX3yNoLJtNSRHNElx3BcCEUuV+VYdiLgg5Nzpm/fcbGihK7ndHBwqMbDlr8azEFP+JKN+8CsIXb3YXGBNOWbB9Yua3aQw60P8P6z7EYEblZHgEvKZePR7wnrfbUt0xywcLoViOlBpG1fdHTJVHnz5DS3pI7tDqGkGDB4e2xudraMikgpiWu2USGZisHHeOLJZOsvUI74Yxqyl69c6Pzlxa5KBKSC7OdYsXw8uxZmXefa9h0PG52/fvdEhub0NaFZfHK8+EEftGHKyjz3S+HEQJ169FbFQ=="}</script>
+<div class="beta-gate">
+<p>This page is for <strong>invited beta testers</strong> of a desktop
+app for reviewing acoustic recorder (ARU) detections. If you’ve been
+invited, enter the password you were given.</p>
+<form id="beta-form" class="beta-form" autocomplete="off">
+<label for="beta-pw">Password</label>
+<div class="beta-row">
+<p><input id="beta-pw" type="password" required>
+<button type="submit" class="btn btn-primary">Unlock</button></p>
+</div>
+<p id="beta-msg" class="beta-msg" role="status" aria-live="polite">
+</p>
+</form>
+</div>
+<div id="beta-content" class="beta-content" hidden="">
+<div class="beta-notice">
+<p><strong>THIS IS A BETA VERSION FOR TESTING ONLY.</strong> Results are
+still being checked against pycnet and Kaleidoscope. Please don’t use
+its outputs for reports, publications or management decisions yet, and
+please don’t share the download link or password.</p>
+</div>
+<p><strong>ARU Review</strong> runs PNW-Cnet (via pycnet-audio) on your
+recordings, lets you listen to and verify each detection with
+customizable tags, and summarizes the verified results into Excel, maps
+and graphs, all in one desktop window with no coding. Everything runs on
+your own computer; nothing is uploaded.</p>
+<div class="contact-button-wrap">
+<a id="beta-download" class="btn btn-primary contact-button" href="#" target="_blank" rel="noopener">Download</a>
+<p id="beta-details" class="beta-details">
+</p>
+</div>
+<div id="getting-started" class="section level3">
+<h3>Getting started</h3>
+<ol style="list-style-type: decimal">
+<li>Download the zip (Windows 10 or 11) and <strong>unzip it</strong>
+somewhere permanent, such as Documents.</li>
+<li>Open <strong><code>Setup guide.html</code></strong> inside it. It
+walks you through the one-time pycnet install (about 20 minutes) and
+your first run.</li>
+<li>The first time you open <code>ARU Review.exe</code>, Windows may say
+<em>“Windows protected your PC”</em>. Click <strong>More info</strong>,
+then <strong>Run anyway</strong>. This appears because the beta isn’t
+signed with a paid publisher certificate.</li>
+</ol>
+</div>
+<div id="feedback" class="section level3">
+<h3>Feedback</h3>
+<p>Anything that’s confusing, slow, broken or missing is useful,
+especially results that don’t match what you’d expect. If something goes
+wrong during a scan, the <strong>Copy log</strong> button on the Scan
+tab copies the technical details to paste into an email.</p>
+<div class="contact-button-wrap">
+<p><a class="btn btn-default" href="mailto:meganbuers@kennicottii.ca?subject=ARU%20Review%20beta%20feedback">Send
+feedback</a></p>
+</div>
+<p class="beta-small">
+ARU Review is free software under GPL-3.0; the source code is included
+in the download. Species identification is by PNW-Cnet (Ruff,
+Lesmeister, Jenkins &amp; Sullivan 2023, <em>SoftwareX</em> 23:101473)
+via pycnet-audio. ARU Review is not developed or endorsed by the USDA
+Forest Service.
+</p>
+</div>
+</div>
+<script>
+(function () {
+  var lockEl = document.getElementById("beta-lock");
+  var form = document.getElementById("beta-form");
+  if (!lockEl || !form) return;
+  var locked = JSON.parse(lockEl.textContent);
+  var msg = document.getElementById("beta-msg");
+  var unb64 = function (s) { return Uint8Array.from(atob(s), function (c) { return c.charCodeAt(0); }); };
+
+  if (!window.crypto || !crypto.subtle) {
+    msg.textContent = "This page needs a current web browser (Chrome, Edge, Firefox or Safari).";
+    return;
+  }
+
+  async function unlock(password) {
+    var base = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]);
+    var key = await crypto.subtle.deriveKey(
+      { name: "PBKDF2", hash: "SHA-256", salt: unb64(locked.salt), iterations: locked.iterations },
+      base, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    var plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(locked.iv) }, key, unb64(locked.ciphertext));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    var btn = form.querySelector("button");
+    btn.disabled = true;
+    msg.className = "beta-msg";
+    msg.textContent = "Checking…";
+    try {
+      var d = await unlock(document.getElementById("beta-pw").value);
+      document.getElementById("beta-download").href = d.link;
+      document.getElementById("beta-download").textContent = "Download ARU Review " + (d.version || "");
+      document.getElementById("beta-details").textContent =
+        [d.size, "Windows 10/11", d.locked ? "updated " + d.locked : ""].filter(Boolean).join(" · ");
+      document.querySelector(".beta-gate").hidden = true;
+      document.getElementById("beta-content").hidden = false;
+    } catch (err) {
+      msg.className = "beta-msg beta-bad";
+      msg.textContent = "That password didn't work. Please check it and try again.";
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
